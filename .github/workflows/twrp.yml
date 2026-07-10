@@ -50,7 +50,7 @@ jobs:
         make recoveryimage -j$(nproc --all)
 
     - name: Upload TWRP Result
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: TWRP-B5-Pro-Image
         path: twrp/out/target/product/b5_pro/recovery.img
