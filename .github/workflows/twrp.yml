@@ -1,9 +1,9 @@
-name: Build TWRP 
+name: Build TWRP
 
 on:
   push:
-    branches:
-      - main
+   branches:
+    -main
   workflow_dispatch:
 
 jobs:
@@ -12,14 +12,14 @@ jobs:
 
     steps:
     - name: Checkout Device Tree
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
-        path: device/micromax/b5_pro
+        path: twrp/device/micromax/b5_pro
 
-    - name: Install Build Dependencies
+    - name: Install Build Dependencies (Ubuntu Latest Fix)
       run: |
         sudo apt-get update
-        sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
+        sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick libncurses6 libncurses-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python3 python-is-python3
 
     - name: Install Repo Tool
       run: |
@@ -28,23 +28,20 @@ jobs:
         chmod a+x ~/bin/repo
         sudo ln -sf ~/bin/repo /usr/bin/repo
 
-    - name: Initialize Minimal TWRP Source
+    - name: Initialize Minimal TWRP Source (Full URL Fix)
       run: |
-        mkdir twrp
         cd twrp
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
-        repo init --depth=1 -u https://github.com -b twrp-9.0
+        # এখানে সম্পূর্ণ অফিশিয়াল গিটহাব সোর্স .git লিঙ্কটি যুক্ত করা হয়েছে
+        repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git -b twrp-9.0
         repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
-
-    - name: Move Device Tree to Source
-      run: |
-        mv device/micromax/b5_pro twrp/device/micromax/b5_pro
 
     - name: Building TWRP Image
       run: |
         cd twrp
         export ALLOW_MISSING_DEPENDENCIES=true
+        export LC_ALL=C
         source build/envsetup.sh
         lunch twrp_b5_pro-eng
         make recoveryimage -j$(nproc --all)
