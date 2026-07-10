@@ -1,0 +1,43 @@
+DEVICE_PATH := device/micromax/b5_pro
+
+# Architecture
+TARGET_ARCH := arm64
+TARGET_ARCH_VARIANT := armv8-a
+TARGET_CPU_ABI := arm64-v8a
+TARGET_CPU_ABI2 :=
+TARGET_CPU_VARIANT := generic
+
+TARGET_2ND_ARCH := arm
+TARGET_2ND_ARCH_VARIANT := armv7-a-neon
+TARGET_2ND_CPU_ABI := armeabi-v7a
+TARGET_2ND_CPU_ABI2 := armeabi
+TARGET_2ND_CPU_VARIANT := generic
+
+# Kernel & Boot Image Headers
+TARGET_NO_KERNEL := false
+BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 buildvariant=user
+BOARD_KERNEL_PAGESIZE := 2048
+BOARD_BOOTIMG_HEADER_VERSION := 0
+
+# Platform (From your resetprop dump)
+TARGET_BOARD_PLATFORM := mt6735
+TARGET_USERIMAGES_USE_EXT4 := true
+
+# Perfect Partition Sizes (From your blockdev dump)
+BOARD_FLASH_BLOCK_SIZE := 131072
+BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16777216
+
+# TWRP Specific Configurations
+TW_THEME := portrait_hdpi
+TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
+TW_MAX_BRIGHTNESS := 255
+RECOVERY_SDCARD_ON_DATA := true
+TW_INCLUDE_CRYPTO := false
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+TW_INTERNAL_STORAGE_PATH := "/data/media/0"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
+TW_EXTERNAL_STORAGE_PATH := "/external_sd"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
+
+TW_INCLUDE_NTFS_3G := true
